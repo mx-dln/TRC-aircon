@@ -1,0 +1,6 @@
+/* Custom styles for Filament admin */
+.filament-login-page .filament-brand {
+    height: 8rem !important;  /* Adjust this value to make the logo bigger or smaller */
+    width: auto !important;
+    margin-bottom: 1.5rem !important;
+}

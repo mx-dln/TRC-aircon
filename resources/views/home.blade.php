@@ -220,79 +220,282 @@
     </div>
 
     <!-- Contact Section -->
-    <div id="contact" class="bg-gray-50 py-12">
+    <div id="contact" class="bg-gradient-to-br from-blue-50 to-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="lg:text-center mb-10">
-                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                    Contact Us
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="inline-block px-3 py-1 text-sm font-semibold text-blue-700 bg-blue-100 rounded-full mb-4">Get In Touch</span>
+                <h2 class="text-4xl font-bold text-gray-900 sm:text-5xl">
+                    Let's Talk About Your Project
                 </h2>
-                <p class="mt-4 max-w-2xl text-xl text-gray-600 lg:mx-auto">
-                    Get in touch for a free consultation or quote
+                <p class="mt-4 text-lg text-gray-600">
+                    Fill out the form and our team will get back to you within 24 hours.
                 </p>
             </div>
 
-            <div class="bg-white shadow-xl rounded-xl overflow-hidden">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
                 <div class="grid grid-cols-1 lg:grid-cols-2">
-                    <!-- Map Section -->
-                    <div class="h-96 lg:h-auto">
+                    <!-- Map of Manila, Philippines -->
+                    <div class="h-full min-h-[400px] lg:min-h-[600px] relative">
                         <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.635654120113!2d120.98421931503525!3d14.599340789825763!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ca03571ec38b%3A0x69d1d5751069c11f!2sManila%2C%20Metro%20Manila%2C%20Philippines!5e0!3m2!1sen!2sus!4v1633023223456!5m2!1sen!2sus" 
-                            width="100%" 
-                            height="100%" 
-                            style="border:0;" 
+                            class="absolute inset-0 w-full h-full"
+                            frameborder="0" 
+                            style="border:0"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d123543.59131670194!2d120.93605800000001!3d14.554729!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ca03571ec38b%3A0x69d1d5751069c11f!2sManila%2C%20Metro%20Manila%2C%20Philippines!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus"
                             allowfullscreen="" 
                             loading="lazy"
-                            title="Our Location in Manila, Philippines">
+                            aria-hidden="false"
+                            tabindex="0">
                         </iframe>
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                            <div class="text-white text-sm">
+                                <p class="font-medium">Our Location</p>
+                                <p>Manila, Philippines</p>
+                            </div>
+                        </div>
                     </div>
-
+                    
                     <!-- Contact Form -->
-                    <div class="p-8">
-                        <h3 class="text-2xl font-semibold text-gray-900 mb-6">Send us a message</h3>
-                        <form action="#" method="POST" class="space-y-6">
-                            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                                <div class="sm:col-span-3">
-                                    <label for="first-name" class="block text-sm font-medium text-gray-700">First name</label>
-                                    <input type="text" name="first-name" id="first-name" autocomplete="given-name"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <div class="p-8 lg:p-12">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Send us a message</h3>
+                        <p class="text-gray-500 mb-8">We'll get back to you as soon as possible</p>
+                        
+                        <form id="contactForm" action="{{ route('contact.submit') }}" method="POST" class="space-y-6">
+                            @csrf
+                            <div id="formMessage" class="hidden p-4 mb-6 rounded-lg text-sm"></div>
+                            
+                            <div class="space-y-6">
+                                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                    <div>
+                                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                            <input type="text" name="name" id="name" required
+                                                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                placeholder="John Doe">
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address <span class="text-red-500">*</span></label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                                </svg>
+                                            </div>
+                                            <input type="email" name="email" id="email" required
+                                                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                placeholder="you@example.com">
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="sm:col-span-3">
-                                    <label for="last-name" class="block text-sm font-medium text-gray-700">Last name</label>
-                                    <input type="text" name="last-name" id="last-name" autocomplete="family-name"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-
-                            <div class="sm:col-span-4">
-                                <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
-                                <input type="email" name="email" id="email" autocomplete="email"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-
-                            <div class="sm:col-span-4">
-                                <label for="phone" class="block text-sm font-medium text-gray-700">Phone number</label>
-                                <input type="text" name="phone" id="phone" autocomplete="tel"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            </div>
-
-                            <div class="sm:col-span-6">
-                                <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
-                                <div class="mt-1">
-                                    <textarea id="message" name="message" rows="4"
-                                        class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
+                                
+                                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                                    <div>
+                                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                                                </svg>
+                                            </div>
+                                            <input type="tel" name="phone" id="phone"
+                                                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                placeholder="+63 (XXX) XXX-XXXX">
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                                        <div class="relative">
+                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                    <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd" />
+                                                </svg>
+                                            </div>
+                                            <input type="text" name="subject" id="subject"
+                                                class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                placeholder="How can we help?">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Your Message <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <div class="absolute top-3 left-3">
+                                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                            </svg>
+                                        </div>
+                                        <textarea id="message" name="message" rows="4" required
+                                            class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            placeholder="Tell us about your project..."></textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <div class="flex items-center h-5">
+                                        <input id="privacy" name="privacy" type="checkbox" required
+                                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                    </div>
+                                    <div class="ml-3 text-sm">
+                                        <label for="privacy" class="text-gray-700">
+                                            I agree to the <a href="#" class="text-blue-600 hover:text-blue-500 font-medium">Privacy Policy</a>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <button type="submit"
+                                        class="w-full flex justify-center py-4 px-6 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                                        Send Message
+                                        <svg class="ml-2 -mr-1 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="flex justify-end">
-                            <button type="submit"
-                                class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                Send Message
-                            </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+                </div>
+            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    @push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+        /* Add some custom styles for the form */
+        .form-input:focus {
+            outline: none;
+            ring: 2px;
+            ring-color: #3b82f6;
+            border-color: #3b82f6;
+        }
+        .form-input {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+    @endpush
+    @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    // Make sure jQuery is loaded
+    if (typeof jQuery == 'undefined') {
+        document.write('<script src="https://code.jquery.com/jquery-3.6.0.min.js"><\/script>');
+    }
+    // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM fully loaded');
+        
+        // Get the form element
+        const form = document.getElementById('contactForm');
+        
+        if (!form) {
+            console.error('Contact form not found!');
+            return;
+        }
+        
+        console.log('Form found, setting up event listener');
+        
+        // Add submit event listener to the form
+        form.addEventListener('submit', function(e) {
+            // Prevent the default form submission
+            e.preventDefault();
+            console.log('Form submission started');
+            
+            // Get form elements
+            const submitButton = this.querySelector('button[type="submit"]');
+            const buttonText = submitButton ? submitButton.querySelector('#buttonText') : null;
+            const spinner = submitButton ? submitButton.querySelector('#spinner') : null;
+            const formMessage = document.getElementById('formMessage');
+            
+            if (!submitButton || !buttonText || !spinner) {
+                console.error('Form elements not found:', {submitButton, buttonText, spinner});
+                return;
+            }
+            
+            // Show loading state
+            submitButton.disabled = true;
+            buttonText.textContent = 'Sending...';
+            spinner.classList.remove('hidden');
+            if (formMessage) formMessage.classList.add('hidden');
+            
+            // Get form data
+            const formData = new FormData(this);
+            
+            // Use jQuery for AJAX to ensure compatibility
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    // Show success message
+                    Swal.fire({
+                        title: response.title || 'Success!',
+                        text: response.message,
+                        icon: 'success',
+                        confirmButtonColor: '#3b82f6',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            popup: 'rounded-xl',
+                            confirmButton: 'px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md font-medium transition-colors duration-200'
+                        }
+                    }).then(() => {
+                        // Reset form after the user clicks OK
+                        form.reset();
+                    });
+                },
+                error: function(xhr) {
+                    const errorMessage = xhr.responseJSON && xhr.responseJSON.message 
+                        ? xhr.responseJSON.message 
+                        : 'An error occurred. Please try again.';
+                    
+                    // Show error message
+                    Swal.fire({
+                        title: 'Error!',
+                        text: errorMessage,
+                        icon: 'error',
+                        confirmButtonColor: '#ef4444',
+                        confirmButtonText: 'OK',
+                        customClass: {
+                            popup: 'rounded-xl',
+                            confirmButton: 'px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md font-medium transition-colors duration-200'
+                        }
+                    });
+                },
+                complete: function() {
+                    // Reset button state
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        if (buttonText) buttonText.textContent = 'Send Message';
+                        if (spinner) spinner.classList.add('hidden');
+                    }
+                    
+                    // Scroll to form message area
+                    if (formMessage) {
+                        formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }
+            });
+        });
+    });
+    </script>
+    @endpush
 @endsection

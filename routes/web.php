@@ -5,10 +5,14 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ContactController;
 
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Contact form submission
+Route::post('/contact', [ContactController::class, '__invoke'])->name('contact.submit');
 
 // Public routes that don't require authentication
 Route::middleware(['web'])
