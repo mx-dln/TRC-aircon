@@ -49,7 +49,7 @@ class ProjectResource extends Resource
                 Forms\Components\Section::make('Project Images')
                     ->schema([
                         Forms\Components\FileUpload::make('images')
-                            ->label('')
+                            ->label('Project Images')
                             ->multiple()
                             ->image()
                             ->directory('project-progress')
@@ -66,13 +66,6 @@ class ProjectResource extends Resource
                             ->previewable()
                             ->columnSpanFull()
                             ->imagePreviewHeight('150')
-                            ->imageEditorViewportWidth('1200')
-                            ->imageEditorViewportHeight('800')
-                            ->uploadingMessage('Uploading project images...')
-                            ->getUploadedFileNameForStorageUsing(
-                                fn (TemporaryUploadedFile $file): string => 'project-progress/project-' . time() . '-' . $file->getClientOriginalName()
-                            )
-                            ->dehydrated(false)
                             ->maxSize(10240) // 10MB max file size
                             ->acceptedFileTypes(['image/*'])
                             ->disk('public')
@@ -81,7 +74,9 @@ class ProjectResource extends Resource
                             ->imageResizeTargetHeight('800')
                             ->imageResizeMode('cover')
                             ->imagePreviewHeight('250')
-                            ->imageEditor()
+                            ->getUploadedFileNameForStorageUsing(
+                                fn (TemporaryUploadedFile $file): string => 'project-progress/project-' . time() . '-' . $file->getClientOriginalName()
+                            )
                             ->afterStateHydrated(function (BaseFileUpload $component, $state, $record) {
                                 if (!$record) {
                                     $component->state([]);
@@ -119,118 +114,6 @@ class ProjectResource extends Resource
                                 }
                                 
                                 $component->state($filePaths);
-                            })
-                            ->afterStateUpdated(function ($state, $record) {
-                                if (!$record) {
-                                    \Log::warning('No record provided to afterStateUpdated');
-                                    return [];
-                                }
-                                
-                                try {
-                                    // Get existing images
-                                    $existingImages = [];
-                                    if (!empty($record->images)) {
-                                        if (is_string($record->images)) {
-                                            $existingImages = json_decode($record->images, true) ?: [];
-                                        } elseif (is_array($record->images)) {
-                                            $existingImages = $record->images;
-                                        }
-                                    }
-                                    
-                                    $newImages = [];
-                                    
-                                    if (is_array($state) || is_object($state)) {
-                                        $state = (array) $state;
-                                        
-                                        foreach ($state as $key => $value) {
-                                            try {
-                                                // Handle temporary uploads (Livewire temporary files)
-                                                if (is_object($value) && method_exists($value, 'getRealPath')) {
-                                                    $tempPath = $value->getRealPath();
-                                                    $originalName = $value->getClientOriginalName();
-                                                    $extension = $value->getClientOriginalExtension();
-                                                    $filename = 'project-' . time() . '-' . substr(md5($originalName), 0, 8) . '.' . $extension;
-                                                    $destination = 'project-progress/' . $filename;
-                                                    
-                                                    // Ensure the directory exists
-                                                    if (!\Storage::disk('public')->exists('project-progress')) {
-                                                        \Storage::disk('public')->makeDirectory('project-progress');
-                                                    }
-                                                    
-                                                    // Store the file
-                                                    $stored = \Storage::disk('public')->put($destination, file_get_contents($tempPath));
-                                                    
-                                                    if ($stored) {
-                                                        $newImages[] = $destination;
-                                                        \Log::info('Stored new file', [
-                                                            'from' => $tempPath,
-                                                            'to' => $destination
-                                                        ]);
-                                                    } else {
-                                                        \Log::error('Failed to store file', [
-                                                            'temp_path' => $tempPath,
-                                                            'destination' => $destination
-                                                        ]);
-                                                    }
-                                                }
-                                                // Handle string paths (existing files)
-                                                elseif (is_string($value) && !empty($value)) {
-                                                    // Skip temporary paths
-                                                    if (str_contains($value, 'livewire-tmp/')) {
-                                                        continue;
-                                                    }
-                                                    
-                                                    // Add existing paths that aren't already in the list
-                                                    if (!in_array($value, $existingImages)) {
-                                                        $newImages[] = $value;
-                                                    }
-                                                }
-                                            } catch (\Exception $e) {
-                                                \Log::error('Error processing file:', [
-                                                    'key' => $key,
-                                                    'value' => $value,
-                                                    'error' => $e->getMessage(),
-                                                    'trace' => $e->getTraceAsString()
-                                                ]);
-                                                continue;
-                                            }
-                                        }
-                                    }
-                                    
-                                    // Merge existing and new images, ensuring uniqueness
-                                    $allImages = array_values(array_unique(array_merge($existingImages, $newImages)));
-                                    \Log::info('All images to save:', ['images' => $allImages]);
-                                    
-                                    // Update the record directly in the database
-                                    $saved = \DB::table('projects')
-                                        ->where('id', $record->id)
-                                        ->update([
-                                            'images' => !empty($allImages) ? json_encode($allImages) : null,
-                                            'updated_at' => now()
-                                        ]);
-                                    
-                                    // Refresh the record
-                                    $record->refresh();
-                                    
-                                    // Debug: Log the record after save
-                                    \Log::info('After save:', [
-                                        'saved' => $saved, 
-                                        'record_id' => $record->id,
-                                        'images_saved' => $record->images,
-                                        'images_count' => is_array($record->images) ? count($record->images) : 0,
-                                        'raw_attributes' => $record->getAttributes(),
-                                        'raw_original' => $record->getOriginal()
-                                    ]);
-                                    
-                                    // Clear the file upload state to prevent duplicate uploads
-                                    return [];
-                                    
-                                } catch (\Exception $e) {
-                                    \Log::error('Error in afterStateUpdated: ' . $e->getMessage(), [
-                                        'trace' => $e->getTraceAsString()
-                                    ]);
-                                    throw $e;
-                                }
                             })
                     ])
                 ]);
