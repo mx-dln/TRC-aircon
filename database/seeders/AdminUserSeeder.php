@@ -21,7 +21,7 @@ class AdminUserSeeder extends Seeder
                 'name' => 'Admin User',
                 'password' => Hash::make('password'), // You should change this in production
                 'email_verified_at' => now(),
-                'role' => 'admin',
+                // 'role' => 'admin',
                 'remember_token' => Str::random(10),
             ]
         );
