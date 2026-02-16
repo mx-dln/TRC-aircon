@@ -139,6 +139,7 @@ class ProductResource extends Resource
                 //     ->size(40)
                 //     ->defaultImageUrl('https://via.placeholder.com/40'),
                 Tables\Columns\ImageColumn::make('image_path')
+                    ->label('Image')
                     ->disk('public')
                     // ->getStateUsing(fn ($record) =>
                     //     $record->image_path

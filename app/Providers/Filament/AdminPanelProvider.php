@@ -30,11 +30,11 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Cyan,
             ])
             ->brandName('TRC')
-            ->brandLogo(asset('images/logo.png'))
-            ->brandLogoHeight('2.5rem')
+            ->brandLogo(asset('images/tcr-logo-transparent.png'))
+            ->brandLogoHeight('2.8rem')
             ->resources([
                 \App\Filament\Resources\ProjectResource::class,
             ])
@@ -61,9 +61,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ])
-            ->colors([
-                'primary' => Color::Blue,
             ]);
     }
 }

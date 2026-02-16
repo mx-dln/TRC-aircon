@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ContactController;
-
+use App\Models\Quotation;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -69,4 +70,15 @@ Route::middleware('auth')->group(function () {
     });
     // Public project view (legacy URL support)
     Route::get('/project/{token}', [ProjectController::class, 'publicView'])->name('project.public');
+
+    Route::get('/quotations/{quotation}/pdf', function (Quotation $quotation) {
+
+        $quotation->load('items.product.brand', 'items.product.type');
+
+        $pdf = Pdf::loadView('pdf.quotation', [
+            'quotation' => $quotation,
+        ]);
+
+        return $pdf->stream("Quotation-{$quotation->quotation_no}.pdf");
+    });
 });
